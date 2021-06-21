@@ -1,0 +1,90 @@
+<!-- <ngx-datatable [rows]="rows" [columns]="columns" class="material"></ngx-datatable> -->
+
+
+<div class="datatable-wrapper">
+  <div class="datatable-filters-wrapper">
+    <button class="add-new-button" (click)="openForm(data.entity, -1)">
+      <i class="fa fa-plus"></i>
+      <span class="button-text">Add new category</span>
+    </button>
+    <!--
+    <div class="global-filter-wrapper">
+      <i class="fa fa-search"></i>
+      <input id="global-Filter" class="filter-input" type="text" placeholder="Search categories" [(ngModel)]="gFilter">
+    </div>
+    -->
+  </div>
+  <ngx-datatable
+    #dataTable
+    class="material expandable categories-list"
+    [columnMode]="'force'"
+    [rows]="data.source"
+    [headerHeight]="30"
+    [selectionType]="'single'"
+    [footerHeight]="50"
+    [limit]="10"
+    [selectionType]="'single'"
+    [reorderable]="false"
+    [scrollbarH]="true"
+    [rowHeight]="'auto'"
+    [sorts]="[{ prop: 'name' }]"
+    [messages]="{ emptyMessage: 'No data' }"
+  ><!--  | globalFilter: gFilter -->
+
+    <ngx-datatable-column name="name" prop="name">
+      <ng-template let-column="column" let-sort="sortFn" ngx-datatable-header-template>
+        <span class="table-header" (click)="sort()">Name</span>
+      </ng-template>
+      <ng-template let-row="row" ngx-datatable-cell-template>{{ row.name }}</ng-template>
+    </ngx-datatable-column>
+
+    <ngx-datatable-column name="action" [sortable]="false">
+      <ng-template let-column="column" let-sort="sortFn" ngx-datatable-header-template>
+        <span class="table-header">Action</span>
+      </ng-template>
+      <ng-template let-row="row" ngx-datatable-cell-template>
+        <span class="table-action-button" (click)="openForm(data.entity, row.id)"><i class="fa fa-pencil"></i>Edit</span>
+        <span class="table-action-button suspend-action-button" (click)="delete(row.id)"><i class="fa fa-trash"></i></span>
+      </ng-template>
+    </ngx-datatable-column>
+
+    <ngx-datatable-footer class="datatable-footer">
+        <ng-template
+          ngx-datatable-footer-template
+          let-rowCount="rowCount"
+          let-pageSize="pageSize"
+          let-selectedCount="selectedCount"
+          let-curPage="curPage"
+          let-offset="offset"
+          let-myTable="dataTable"
+        >
+          <!--
+          <div class="page-items-info-wrapper" *ngIf="rowCount > 0">
+            <span class="page-items-info" *ngIf="rowCount / pageSize > 1">Page
+              <strong>{{ curPage }} </strong>of
+              <strong>{{ rowCount / pageSize | roundUp }}</strong>
+              (<span>Items: </span><strong>{{ rowCount }}</strong>)
+            </span>
+            <span class="page-items-info" *ngIf="rowCount > 0 && rowCount / pageSize <= 1">
+              <span>Items: </span><strong>{{ rowCount }}</strong>
+            </span>
+            <datatable-pager
+              [pagerLeftArrowIcon]="'datatable-icon-left'"
+              [pagerRightArrowIcon]="'datatable-icon-right'"
+              [pagerPreviousIcon]="'datatable-icon-prev'"
+              [pagerNextIcon]="'datatable-icon-skip'"
+              [page]="curPage"
+              [size]="pageSize"
+              [count]="rowCount"
+              [hidden]="!(rowCount / pageSize > 1)"
+              (change)="dataTable.onFooterPage($event)"
+            >
+            </datatable-pager>
+            <div class="clearfix"></div>
+          </div>
+          -->
+        </ng-template>
+      </ngx-datatable-footer>
+
+  </ngx-datatable>
+</div>
