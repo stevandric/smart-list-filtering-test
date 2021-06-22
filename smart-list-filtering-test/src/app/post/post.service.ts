@@ -20,15 +20,19 @@ export class AppPostService {
     return this.http.get<Post>(environment.API_ENDPOINT + 'posts');
   }
 
-  get() {
-
+  get(id: number): Observable<Post> {
+    return this.http.get<Post>(environment.API_ENDPOINT + 'posts/' + id);
   }
 
-  edit() {
-
+  update(data: Post, id: number) {
+    return this.http.put<Post>(environment.API_ENDPOINT + 'posts/' + id, data);
   }
 
   delete(id: number): Observable<any> {
     return this.http.delete<any>(environment.API_ENDPOINT + 'posts/' + id);
+  }
+
+  create(data: Post): Observable<Post> {
+    return this.http.post<Post>(environment.API_ENDPOINT + 'posts', data);
   }
 }

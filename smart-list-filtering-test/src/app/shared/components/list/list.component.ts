@@ -11,6 +11,11 @@ import { ToastrService } from 'ngx-toastr';
 import { AppPostService } from 'src/app/post/post.service';
 import { SharedService } from '../../services/shared.service';
 
+import { DetailsComponent } from './../details/details.component';
+
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Post } from 'src/app/post/post.model';
+
 @Component({
   selector: 'app-list',
   templateUrl: './list.component.html',
@@ -29,6 +34,7 @@ export class ListComponent implements OnInit {
     private spinner: SpinnerService,
     private postService: AppPostService,
     private shared: SharedService,
+    private modalService: NgbModal,
     private toastr: ToastrService
   ) { }
 
@@ -37,10 +43,6 @@ export class ListComponent implements OnInit {
 
   ngOnChanges(): void {
     this.data = {...this.data};
-  }
-
-  open(entity: string, id: number) {
-    this.toastr.error('Hello world!', 'Toastr fun!');
   }
 
   delete(entity: string, id: number) {
@@ -63,6 +65,30 @@ export class ListComponent implements OnInit {
         this.spinner.show(false);
         return;
     }
+  }
+
+  getDetails(entity: string, id: number) {
+    this.spinner.show(true);
+    switch (entity) {
+      case 'post':
+        this.postService.get(id).subscribe(
+          (post: Post) => {
+            this.open('post', post);
+          },
+          (error: HttpErrorResponse) => {
+            this.shared.handleError(error);
+          }
+        );
+        break;
+    }
+  }
+
+  open(entity: string, modalData: Post) {
+    const modal = this.modalService.open(DetailsComponent);
+    modal.componentInstance.modalData = modalData;
+    modal.componentInstance.entity    = entity;
+    this.spinner.show(false);
+    return modal;
   }
 
 }

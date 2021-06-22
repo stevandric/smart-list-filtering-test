@@ -1,3 +1,6 @@
+body {
+  padding: 16px;
+}
 @-moz-keyframes spin {
     0% {
         -moz-transform: rotate(0deg);
@@ -80,4 +83,47 @@
             opacity: 0.8;
         }
     }
+}
+.form-container {
+  .input-wrapper {
+    display: block;
+    margin-bottom: 16px;
+    label {
+      display: block;
+      font-size: 0.9rem;
+    }
+    input, textarea {
+      width: 100%;
+      padding: 4px;
+    }
+    textarea { resize: none; }
+    .value-label {
+      color: #ff0000;
+    }
+    .read-only {
+      pointer-events: none;
+      opacity: 0.6;
+      outline: none;
+    }
+    .required-label:after {
+      content: '*';
+      color: #ff0000;
+      font-size: 14px;
+      margin-left: 4px;
+      position: relative;
+      bottom: 3px;
+    }
+  }
+}
+.text-right {
+  text-align: right;
+}
+.add-new-item {
+  font-size: 1.75rem;
+  font-weight: 800;
+  text-align: right;
+  cursor: pointer;
+  &:hover {
+    opacity: 0.8;
+  }
 }

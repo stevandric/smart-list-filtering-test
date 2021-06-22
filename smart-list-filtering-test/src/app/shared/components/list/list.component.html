@@ -1,25 +1,24 @@
-<ngx-datatable 
+<span class="add-new-item" (click)="open('post', null)">+</span>
+<ngx-datatable
   #ngxDatatable
-  [rows]="data.rows" 
-  class="material" 
+  [rows]="data.rows"
+  class="material"
   [loadingIndicator]="data.loading"
-  [columnMode]="'force'" 
-  [headerHeight]="50" 
-  [footerHeight]="50" 
+  [columnMode]="'force'"
+  [headerHeight]="50"
+  [footerHeight]="50"
   [rowHeight]="'auto'"
   [reorderable]="reorderable"
   *ngIf="!data.loading"
 >
-
   <ngx-datatable-column *ngFor="let column of data.columns" name="{{ column.name }}" prop="{{ column.prop }}" [sortable]="false" [resizeable]="false">
     <ng-template let-column="column" let-sort="sortFn" ngx-datatable-header-template>
       <span class="table-header" (click)="sort()">{{ column.prop }}</span>
     </ng-template>
-
     <ng-template let-row="row" ngx-datatable-cell-template>
       <span *ngIf="column.prop !== 'actions'">{{ row[column.prop] }}</span>
       <span *ngIf="column.prop == 'actions'">
-        <span class="table-action-button" (click)="open(data.entity, row.id)">
+        <span class="table-action-button" (click)="getDetails(data.entity, row.id)">
           <fa-icon [icon]="faPencilAlt"></fa-icon>
         </span>
         <span class="table-action-button" (click)="delete(data.entity, row.id)">
@@ -27,7 +26,5 @@
         </span>
       </span>
     </ng-template>
-
   </ngx-datatable-column>
-
 </ngx-datatable>

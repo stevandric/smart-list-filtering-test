@@ -1,1 +1,25 @@
-<p>details works!</p>
+<div class="modal-container">
+  <div class="modal-header">
+    <h5 class="modal-title">{{ modalTitle }}</h5>
+    <div class="d-flex align-items-center">
+      <svg src="assets/img/close.svg" class="modal-close-btn cursor-pointer" (click)="close()" [ngStyle]="{ 'width.px': 16, 'height.px': 16 }"></svg>
+    </div>
+  </div>
+  <div class="modal-body">
+    <form class="form-container" [formGroup]="detailsForm">
+      <div class="row">
+        <div *ngFor="let item of formData; let i = index" class="input-wrapper col-{{ item.columns}}">
+          <label [ngClass]="{ 'required-label' : item.required}">{{ item.label }}</label>
+          <input *ngIf="item.control == 'input'" type="text" id="{{ item.prop }}" formControlName="{{ item.prop }}" [ngClass]="{ 'read-only': item.readOnly }">
+          <textarea *ngIf="item.control == 'textarea'" id="{{ item.prop }}" formControlName="{{ item.prop }}" [ngClass]="{ 'read-only': item.readOnly }"></textarea>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="cancel-btn" (click)="close()">
+      Cancel
+    </button>
+    <button type="button" class="save-btn" (click)="save()" ngbAutofocus>Save</button>
+  </div>
+</div>

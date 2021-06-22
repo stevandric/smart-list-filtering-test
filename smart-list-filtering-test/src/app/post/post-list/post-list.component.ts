@@ -36,15 +36,15 @@ export class PostListComponent implements OnInit {
           loading: false,
           initialSort: 'userId',
           columns: [
-            { 
+            {
               prop: 'userId',
               name: 'User ID'
             },
-            { 
+            {
               prop: 'title',
               name: 'Title'
             },
-            { 
+            {
               prop: 'actions',
               name: 'Actions'
             },
