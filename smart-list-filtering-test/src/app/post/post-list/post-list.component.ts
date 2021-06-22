@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ListData } from 'src/app/shared/components/list/list.model';
+import { SharedService } from 'src/app/shared/services/shared.service';
 import { Post } from '../post.model';
 import { AppPostService } from '../post.service';
 
@@ -9,26 +11,46 @@ import { AppPostService } from '../post.service';
 })
 export class PostListComponent implements OnInit {
 
-  rows: Post;
-
-  columns = [{ prop: 'userId' }, { prop: 'title' }];
+  public listData: ListData = new ListData();
 
   constructor(
-    private postService: AppPostService
-  ) { }
+    private postService: AppPostService,
+    private shared: SharedService
+  ) {}
 
   ngOnInit(): void {
     this.list();
+    this.shared.emitPostReload.subscribe(
+      () => {
+        this.list();
+      }
+    )
   }
 
   list() {
     this.postService.list().subscribe(
       (resp: Post) => {
-        console.log('resp: ', resp);
-        this.rows = resp;
+        this.listData = {
+          entity: 'post',
+          rows: resp,
+          loading: false,
+          initialSort: 'userId',
+          columns: [
+            { 
+              prop: 'userId',
+              name: 'User ID'
+            },
+            { 
+              prop: 'title',
+              name: 'Title'
+            },
+            { 
+              prop: 'actions',
+              name: 'Actions'
+            },
+          ]
+        };
       }
     );
   }
-
-
 }

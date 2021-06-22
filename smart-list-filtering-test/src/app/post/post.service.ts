@@ -28,7 +28,7 @@ export class AppPostService {
 
   }
 
-  delete() {
-
+  delete(id: number): Observable<any> {
+    return this.http.delete<any>(environment.API_ENDPOINT + 'posts/' + id);
   }
 }
