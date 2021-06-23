@@ -95,7 +95,7 @@ body {
         input,
         textarea {
             width: 100%;
-            padding: 4px;
+            padding: 8px;
         }
         textarea {
             resize: none;
@@ -149,3 +149,27 @@ ngb-accordion {
 .change-pagination {
   width: 70px;
 }
+.list-filter-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .filter-item {
+    margin: 0 16px;
+    label {
+      display: block;
+    }
+  }
+}
+button {
+  border: 1px solid #ddd;
+  transition: 0.25s;
+  padding: 8px;
+  &:hover {
+    background-color: #ddd;
+    transition: 0.25s;
+  }
+}
+.global-filter-wrapper {
+  input { padding: 8px; }
+}
+.datatable-footer { padding-left: 16px; }

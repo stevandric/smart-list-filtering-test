@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ListData } from 'src/app/shared/components/list/list.model';
 import { SharedService } from 'src/app/shared/services/shared.service';
 import { Post } from '../post.model';
+import * as ListConstant from './../../shared/constants/lists';
 import { AppPostService } from '../post.service';
 
 @Component({
@@ -32,7 +33,7 @@ export class PostListComponent implements OnInit {
     this.postService.list().subscribe(
       (resp: Post) => {
         this.listData = this.filterData = {
-          entity: 'post',
+          entity: ListConstant.POST,
           rows: resp,
           loading: false,
           initialSort: 'userId',

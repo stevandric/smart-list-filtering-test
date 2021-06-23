@@ -1,26 +1,43 @@
 
 <div class="list-filter-wrapper">
-  <span class="add-new-item" (click)="open('post')">+</span>
-
-  <ng-select
-    class="change-pagination"
-    [items]="listConstants.PER_PAGE_ITEMS"
-    bindLabel="name"
-    bindValue="id"
-    (change)="onLimitChange($event)"
-    [clearable]="false"
-    [(ngModel)]="selectedLimit"
-  ></ng-select>
-
-  <button *ngFor="let id of userIds" (click)="filterListByUserId(id)">{{ id }}</button>
-  <button (click)="filterListByUserId(null)">Reset</button>
-
-  <div class="global-filter-wrapper">
-    <i class="fa fa-search"></i>
-    <input id="global-Filter" class="filter-input" type="text" placeholder="Search list" [(ngModel)]="gFilter">
+  <div class="filter-item">
+    <label>Add new</label>
+    <div class="list-filter">
+      <span class="add-new-item" (click)="open(listConstants.POST)">+</span>
+    </div>
   </div>
-
+  <div class="filter-item">
+    <label>Per page</label>
+    <div class="list-filter">
+      <ng-select
+      class="change-pagination"
+      [items]="listConstants.PER_PAGE_ITEMS"
+      bindLabel="name"
+      bindValue="id"
+      (change)="onLimitChange($event)"
+      [clearable]="false"
+      [(ngModel)]="selectedLimit"
+    ></ng-select>
+    </div>
+  </div>
+  <div class="filter-item" *ngIf="userIds && userIds.length">
+    <label>User ID filter</label>
+    <div class="list-filter">
+      <button *ngFor="let id of userIds" (click)="filterListByUserId(id)">{{ id }}</button>
+      <button (click)="filterListByUserId(null)">Reset</button>
+    </div>
+  </div>
+  <div class="filter-item">
+    <label>Global filter</label>
+    <div class="list-filter">
+      <div class="global-filter-wrapper">
+        <i class="fa fa-search"></i>
+        <input id="global-Filter" class="filter-input" type="text" placeholder="Search list" [(ngModel)]="gFilter">
+      </div>
+    </div>
+  </div>
 </div>
+
 <ngx-datatable
   #ngxDatatable
   [rows]="filterData.rows | globalFilter: gFilter"
@@ -63,7 +80,7 @@
     >
       <div class="page-items-info-wrapper" *ngIf="rowCount > 0">
         <span class="page-items-info" *ngIf="rowCount / pageSize > 1">page
-          <strong>{{ curPage }} </strong>of}
+          <strong>{{ curPage }} </strong>of
           <strong>{{ rowCount / pageSize | roundUp }}</strong>
           (<span>items: </span><strong>{{ rowCount }}</strong>)
         </span>
@@ -82,7 +99,6 @@
           (change)="ngxDatatable.onFooterPage($event)"
         >
         </datatable-pager>
-        <div class="clearfix"></div>
       </div>
     </ng-template>
   </ngx-datatable-footer>

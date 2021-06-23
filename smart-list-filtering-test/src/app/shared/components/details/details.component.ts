@@ -8,6 +8,7 @@ import { AppPostService } from 'src/app/post/post.service';
 import { SharedService } from '../../services/shared.service';
 import { SpinnerService } from '../../services/spinner.service';
 import { FormData, PostForm, Comment } from './../../constants/forms';
+import * as ListConstant from './../../../shared/constants/lists';
 
 @Component({
   selector: 'app-details',
@@ -47,7 +48,7 @@ export class DetailsComponent implements OnInit {
   createForm() {
     let group = {};
     switch (this.entity) {
-      case 'post':
+      case ListConstant.POST:
         this.formData = PostForm;
         this.hasComments = true;
         PostForm.forEach((item: FormData) => {
@@ -78,7 +79,7 @@ export class DetailsComponent implements OnInit {
 
     if (this.modalData) {
       switch (this.entity) {
-        case 'post':
+        case ListConstant.POST:
           this.postService.update(saveData, this.modalData.id).subscribe(
             () => {
               this.toastr.success(`Post ${this.modalData.id} successfully updated.`, 'Success');
@@ -92,7 +93,7 @@ export class DetailsComponent implements OnInit {
       }
     } else {
       switch (this.entity) {
-        case 'post':
+        case ListConstant.POST:
           const saveData = this.detailsForm.getRawValue();
           this.postService.create(saveData).subscribe(
             () => {

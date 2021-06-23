@@ -12,6 +12,9 @@ import { GlobalFilterPipe } from './pipes/global-filter.pipe';
 import { ListComponent } from './components/list/list.component';
 import { DetailsComponent } from './components/details/details.component';
 import { SpinnerComponent } from './components/spinner/spinner.component';
+import { ModalHeaderComponent } from './components/details/modal-header/modal-header.component';
+import { CommentsComponent } from './components/details/comments/comments.component';
+import { ModalFooterComponent } from './components/details/modal-footer/modal-footer.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +22,10 @@ import { SpinnerComponent } from './components/spinner/spinner.component';
     DetailsComponent,
     SpinnerComponent,
     RoundUpPipe,
-    GlobalFilterPipe
+    GlobalFilterPipe,
+    ModalHeaderComponent,
+    CommentsComponent,
+    ModalFooterComponent
   ],
   imports: [
     CommonModule,

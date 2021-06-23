@@ -29,17 +29,12 @@ export class ListComponent implements OnInit {
   @ViewChild('ngxDatatable') ngxDatatable: DatatableComponent;
 
   public reorderable: boolean = true;
-
-  faPencilAlt = faPencilAlt;
-  faTrashAlt = faTrashAlt;
-
-  listConstants = ListConstants;
-
-  selectedLimit = 10;
-
-  userIds: any = [];
-
-  gFilter = '';
+  public faPencilAlt = faPencilAlt;
+  public faTrashAlt = faTrashAlt;
+  public listConstants = ListConstants;
+  public selectedLimit = 10;
+  public userIds: any = [];
+  public gFilter = '';
 
   constructor(
     private spinner: SpinnerService,
@@ -60,7 +55,7 @@ export class ListComponent implements OnInit {
   delete(entity: string, id: number) {
     this.spinner.show(true);
     switch (entity) {
-      case 'post':
+      case ListConstants.POST:
         this.postService.delete(id).subscribe(
           () => {
             this.toastr.success('Post ' + id + ' deleted successfully!', 'Success!');
@@ -82,15 +77,15 @@ export class ListComponent implements OnInit {
   getDetails(entity: string, id: number) {
     this.spinner.show(true);
     switch (entity) {
-      case 'post':
+      case ListConstants.POST:
         this.postService.get(id).subscribe(
           (post: Post) => {
             this.postService.getComments(id).subscribe(
               (comments: Comment) => {
-                this.open('post', post, comments);
+                this.open(ListConstants.POST, post, comments);
               },
               (error: HttpErrorResponse) => {
-                this.open('post', post);
+                this.open(ListConstants.POST, post);
                 this.shared.handleError(error);
               }
             )

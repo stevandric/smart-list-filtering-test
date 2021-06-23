@@ -1,0 +1,10 @@
+<div class="comments-wrapper">
+  Comments
+  <ngb-accordion [closeOthers]="true" activeIds="comment-0">
+    <ngb-panel *ngFor="let comment of comments; let i = index;" id="comment-{{ i }}" title="{{ comment.name }}">
+      <ng-template ngbPanelContent>
+        {{ comment.body }}
+      </ng-template>
+    </ngb-panel>
+  </ngb-accordion>
+</div>

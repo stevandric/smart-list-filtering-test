@@ -16,3 +16,5 @@ export const PER_PAGE_ITEMS = [
     name: 25,
   }
 ];
+
+export const POST = 'post';
