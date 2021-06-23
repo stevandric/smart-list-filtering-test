@@ -12,6 +12,7 @@ import { AppPostService } from '../post.service';
 export class PostListComponent implements OnInit {
 
   public listData: ListData = new ListData();
+  public filterData: ListData = new ListData();
 
   constructor(
     private postService: AppPostService,
@@ -30,7 +31,7 @@ export class PostListComponent implements OnInit {
   list() {
     this.postService.list().subscribe(
       (resp: Post) => {
-        this.listData = {
+        this.listData = this.filterData = {
           entity: 'post',
           rows: resp,
           loading: false,

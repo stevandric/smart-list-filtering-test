@@ -13,6 +13,7 @@ import { SharedService } from '../../services/shared.service';
 
 import { DetailsComponent } from './../details/details.component';
 import { Comment } from './../../constants/forms';
+import * as ListConstants from './../../constants/lists';
 
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Post } from 'src/app/post/post.model';
@@ -24,12 +25,21 @@ import { Post } from 'src/app/post/post.model';
 })
 export class ListComponent implements OnInit {
   @Input() data: ListData;
+  @Input() filterData: ListData;
   @ViewChild('ngxDatatable') ngxDatatable: DatatableComponent;
 
   public reorderable: boolean = true;
 
   faPencilAlt = faPencilAlt;
   faTrashAlt = faTrashAlt;
+
+  listConstants = ListConstants;
+
+  selectedLimit = 10;
+
+  userIds: any = [];
+
+  gFilter = '';
 
   constructor(
     private spinner: SpinnerService,
@@ -40,6 +50,7 @@ export class ListComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.userIds = [...new Set(this.data.rows.map(item => item.userId))];
   }
 
   ngOnChanges(): void {
@@ -99,6 +110,18 @@ export class ListComponent implements OnInit {
     modal.componentInstance.comments  = comments;
     this.spinner.show(false);
     return modal;
+  }
+
+  onLimitChange(event: any) {
+    this.ngxDatatable.offset = 0;
+  }
+
+  filterListByUserId(userId: number) {
+    if (userId) {
+      this.filterData.rows = this.data.rows.filter(item => item.userId == userId);
+    } else {
+      this.filterData.rows = this.data.rows;
+    }
   }
 
 }

@@ -3,7 +3,7 @@ import { Post } from '../../../post/post.model';
 export class ListData {
     entity: string;
     loading: boolean = true;
-    rows: Post; // || ...
+    rows: Post|any; // || ...
     initialSort: string;
     columns: ListColumn[]
 }

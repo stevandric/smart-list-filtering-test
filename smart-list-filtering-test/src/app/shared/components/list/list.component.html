@@ -1,13 +1,35 @@
-<span class="add-new-item" (click)="open('post')">+</span>
+
+<div class="list-filter-wrapper">
+  <span class="add-new-item" (click)="open('post')">+</span>
+
+  <ng-select
+    class="change-pagination"
+    [items]="listConstants.PER_PAGE_ITEMS"
+    bindLabel="name"
+    bindValue="id"
+    (change)="onLimitChange($event)"
+    [clearable]="false"
+    [(ngModel)]="selectedLimit"
+  ></ng-select>
+
+  <button *ngFor="let id of userIds" (click)="filterListByUserId(id)">{{ id }}</button>
+  <button (click)="filterListByUserId(null)">Reset</button>
+
+  <div class="global-filter-wrapper">
+    <i class="fa fa-search"></i>
+    <input id="global-Filter" class="filter-input" type="text" placeholder="Search list" [(ngModel)]="gFilter">
+  </div>
+
+</div>
 <ngx-datatable
   #ngxDatatable
-  [rows]="data.rows"
+  [rows]="filterData.rows | globalFilter: gFilter"
   class="material"
   [loadingIndicator]="data.loading"
   [columnMode]="'force'"
   [headerHeight]="50"
   [footerHeight]="50"
-  [limit]="10"
+  [limit]="selectedLimit"
   [rowHeight]="'auto'"
   [reorderable]="reorderable"
   *ngIf="!data.loading"
