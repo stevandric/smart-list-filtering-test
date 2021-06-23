@@ -4,6 +4,7 @@ import { map, tap } from 'rxjs/operators';
 import { Subject, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Post } from './post.model';
+import { Comment } from './../shared/constants/forms';
 
 @Injectable({
   providedIn: 'root',
@@ -34,5 +35,9 @@ export class AppPostService {
 
   create(data: Post): Observable<Post> {
     return this.http.post<Post>(environment.API_ENDPOINT + 'posts', data);
+  }
+
+  getComments(id: number): Observable<Comment> {
+    return this.http.get<Comment>(environment.API_ENDPOINT + 'posts/' + id + '/comments');
   }
 }

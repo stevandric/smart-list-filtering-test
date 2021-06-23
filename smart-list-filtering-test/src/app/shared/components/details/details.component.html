@@ -2,7 +2,7 @@
   <div class="modal-header">
     <h5 class="modal-title">{{ modalTitle }}</h5>
     <div class="d-flex align-items-center">
-      <svg src="assets/img/close.svg" class="modal-close-btn cursor-pointer" (click)="close()" [ngStyle]="{ 'width.px': 16, 'height.px': 16 }"></svg>
+      <img src="assets/img/close.svg" class="modal-close-btn cursor-pointer" (click)="close()">
     </div>
   </div>
   <div class="modal-body">
@@ -15,6 +15,18 @@
         </div>
       </div>
     </form>
+
+    <div class="comments-wrapper" *ngIf="comments">
+      Comments
+      <ngb-accordion [closeOthers]="true" activeIds="comment-0">
+        <ngb-panel *ngFor="let comment of comments; let i = index;" id="comment-{{ i }}" title="{{comment.name}}">
+          <ng-template ngbPanelContent>
+            {{ comment.body }}
+          </ng-template>
+        </ngb-panel>
+      </ngb-accordion>
+    </div>
+
   </div>
   <div class="modal-footer">
     <button type="button" class="cancel-btn" (click)="close()">

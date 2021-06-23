@@ -7,7 +7,7 @@ import { Post } from 'src/app/post/post.model';
 import { AppPostService } from 'src/app/post/post.service';
 import { SharedService } from '../../services/shared.service';
 import { SpinnerService } from '../../services/spinner.service';
-import { FormData, PostForm } from './../../constants/forms';
+import { FormData, PostForm, Comment } from './../../constants/forms';
 
 @Component({
   selector: 'app-details',
@@ -16,10 +16,12 @@ import { FormData, PostForm } from './../../constants/forms';
 })
 export class DetailsComponent implements OnInit {
   @Input() modalData: Post;
+  @Input() comments: Comment; // todo
   @Input() entity: string;
 
   public modalTitle: string = '';
   public detailsForm: FormGroup;
+  public hasComments: boolean = false;
   public formData: FormData[];
 
   constructor(
@@ -47,6 +49,7 @@ export class DetailsComponent implements OnInit {
     switch (this.entity) {
       case 'post':
         this.formData = PostForm;
+        this.hasComments = true;
         PostForm.forEach((item: FormData) => {
           group[item.prop] = item.required ? new FormControl('', Validators.required) : new FormControl('');
         })

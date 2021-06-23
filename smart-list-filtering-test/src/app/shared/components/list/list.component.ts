@@ -12,6 +12,7 @@ import { AppPostService } from 'src/app/post/post.service';
 import { SharedService } from '../../services/shared.service';
 
 import { DetailsComponent } from './../details/details.component';
+import { Comment } from './../../constants/forms';
 
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Post } from 'src/app/post/post.model';
@@ -73,7 +74,15 @@ export class ListComponent implements OnInit {
       case 'post':
         this.postService.get(id).subscribe(
           (post: Post) => {
-            this.open('post', post);
+            this.postService.getComments(id).subscribe(
+              (comments: Comment) => {
+                this.open('post', post, comments);
+              },
+              (error: HttpErrorResponse) => {
+                this.open('post', post);
+                this.shared.handleError(error);
+              }
+            )
           },
           (error: HttpErrorResponse) => {
             this.shared.handleError(error);
@@ -83,10 +92,11 @@ export class ListComponent implements OnInit {
     }
   }
 
-  open(entity: string, modalData: Post) {
+  open(entity: string, modalData?: Post, comments?: Comment) {
     const modal = this.modalService.open(DetailsComponent);
     modal.componentInstance.modalData = modalData;
     modal.componentInstance.entity    = entity;
+    modal.componentInstance.comments  = comments;
     this.spinner.show(false);
     return modal;
   }

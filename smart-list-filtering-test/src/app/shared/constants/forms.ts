@@ -38,3 +38,11 @@ export const PostForm: FormData[] = [
     columns: 12,
   },
 ];
+
+export interface Comment {
+  postId: number;
+  id: number;
+  name: string;
+  email: string;
+  body: string;
+};

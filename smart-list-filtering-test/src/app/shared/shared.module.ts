@@ -4,6 +4,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { RoundUpPipe } from './pipes/round-up.pipe';
 
 import { ListComponent } from './components/list/list.component';
 import { DetailsComponent } from './components/details/details.component';
@@ -13,20 +15,23 @@ import { SpinnerComponent } from './components/spinner/spinner.component';
   declarations: [
     ListComponent,
     DetailsComponent,
-    SpinnerComponent
+    SpinnerComponent,
+    RoundUpPipe
   ],
   imports: [
     CommonModule,
     NgxDatatableModule,
     FontAwesomeModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgbModule
   ],
   exports: [
     ListComponent,
     DetailsComponent,
     SpinnerComponent,
-    NgxDatatableModule
+    NgxDatatableModule,
+    RoundUpPipe
   ],
 })
 export class SharedModule {}
