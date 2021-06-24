@@ -5,6 +5,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { Post } from 'src/app/post/post.model';
 import { AppPostService } from 'src/app/post/post.service';
+import { Subscription } from 'rxjs';
 import { SharedService } from '../../services/shared.service';
 import { SpinnerService } from '../../services/spinner.service';
 import { FormData, PostForm, Comment } from './../../constants/forms';
@@ -19,7 +20,7 @@ export class DetailsComponent implements OnInit {
   @Input() modalData: Post;
   @Input() comments: Comment; // todo
   @Input() entity: string;
-
+  private subscriptions: Subscription[] = [];
   public modalTitle: string = '';
   public detailsForm: FormGroup;
   public hasComments: boolean = false;
@@ -80,32 +81,40 @@ export class DetailsComponent implements OnInit {
     if (this.modalData) {
       switch (this.entity) {
         case ListConstant.POST:
-          this.postService.update(saveData, this.modalData.id).subscribe(
-            () => {
-              this.toastr.success(`Post ${this.modalData.id} successfully updated.`, 'Success');
-              this.spinner.show(false);
-              this.activeModal.close();
-            },
-            (error: HttpErrorResponse) => {
-              this.shared.handleError(error);
-            }
-          )
+          this.subscriptions.push(
+            this.postService.update(saveData, this.modalData.id).subscribe(
+              () => {
+                this.toastr.success(`Post ${this.modalData.id} successfully updated.`, 'Success');
+                this.spinner.show(false);
+                this.activeModal.close();
+              },
+              (error: HttpErrorResponse) => {
+                this.shared.handleError(error);
+              }
+            )
+          );
       }
     } else {
       switch (this.entity) {
         case ListConstant.POST:
           const saveData = this.detailsForm.getRawValue();
-          this.postService.create(saveData).subscribe(
-            () => {
-              this.toastr.success(`Post successfully created.`, 'Success');
-              this.spinner.show(false);
-              this.activeModal.close();
-            },
-            (error: HttpErrorResponse) => {
-              this.shared.handleError(error);
-            }
-          )
+          this.subscriptions.push(
+            this.postService.create(saveData).subscribe(
+              () => {
+                this.toastr.success(`Post successfully created.`, 'Success');
+                this.spinner.show(false);
+                this.activeModal.close();
+              },
+              (error: HttpErrorResponse) => {
+                this.shared.handleError(error);
+              }
+            )
+          );
       }
     }
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach((subscriptions) => subscriptions.unsubscribe());
   }
 }

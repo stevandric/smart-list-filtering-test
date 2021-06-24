@@ -6,6 +6,7 @@ import { ListData } from './list.model';
 import { SpinnerService } from './../../services/spinner.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
+import { Subscription } from 'rxjs';
 import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import { ToastrService } from 'ngx-toastr';
 import { AppPostService } from 'src/app/post/post.service';
@@ -27,7 +28,7 @@ export class ListComponent implements OnInit {
   @Input() data: ListData;
   @Input() filterData: ListData;
   @ViewChild('ngxDatatable') ngxDatatable: DatatableComponent;
-
+  private subscriptions: Subscription[] = [];
   public reorderable: boolean = true;
   public faPencilAlt = faPencilAlt;
   public faTrashAlt = faTrashAlt;
@@ -56,15 +57,17 @@ export class ListComponent implements OnInit {
     this.spinner.show(true);
     switch (entity) {
       case ListConstants.POST:
-        this.postService.delete(id).subscribe(
-          () => {
-            this.toastr.success('Post ' + id + ' deleted successfully!', 'Success!');
-            this.shared.emitPostReload.emit();
-            this.spinner.show(false);
-          },
-          (error: HttpErrorResponse) => {
-            this.shared.handleError(error);
-          }
+        this.subscriptions.push(
+          this.postService.delete(id).subscribe(
+            () => {
+              this.toastr.success('Post ' + id + ' deleted successfully!', 'Success!');
+              this.shared.emitPostReload.emit();
+              this.spinner.show(false);
+            },
+            (error: HttpErrorResponse) => {
+              this.shared.handleError(error);
+            }
+          )
         );
         break;
 
@@ -78,21 +81,23 @@ export class ListComponent implements OnInit {
     this.spinner.show(true);
     switch (entity) {
       case ListConstants.POST:
-        this.postService.get(id).subscribe(
-          (post: Post) => {
-            this.postService.getComments(id).subscribe(
-              (comments: Comment) => {
-                this.open(ListConstants.POST, post, comments);
-              },
-              (error: HttpErrorResponse) => {
-                this.open(ListConstants.POST, post);
-                this.shared.handleError(error);
-              }
-            )
-          },
-          (error: HttpErrorResponse) => {
-            this.shared.handleError(error);
-          }
+        this.subscriptions.push(
+          this.postService.get(id).subscribe(
+            (post: Post) => {
+              this.postService.getComments(id).subscribe(
+                (comments: Comment) => {
+                  this.open(ListConstants.POST, post, comments);
+                },
+                (error: HttpErrorResponse) => {
+                  this.open(ListConstants.POST, post);
+                  this.shared.handleError(error);
+                }
+              )
+            },
+            (error: HttpErrorResponse) => {
+              this.shared.handleError(error);
+            }
+          )
         );
         break;
     }
@@ -119,4 +124,7 @@ export class ListComponent implements OnInit {
     }
   }
 
+  ngOnDestroy() {
+    this.subscriptions.forEach((subscriptions) => subscriptions.unsubscribe());
+  }
 }
